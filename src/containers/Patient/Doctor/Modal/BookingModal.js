@@ -111,9 +111,9 @@ class BookingModal extends Component {
         let { language } = this.props;
         if (dataScheduleTimeModal && !_.isEmpty(dataScheduleTimeModal)) {
             let name = language === LANGUAGES.VI ?
-                `${dataScheduleTimeModal.doctorData.lastName} &{dataScheduleTimeModal.doctorData.firstName}`
+                `${dataScheduleTimeModal.doctorData.lastName} ${dataScheduleTimeModal.doctorData.firstName}`
                 :
-                `${dataScheduleTimeModal.doctorData.firstName} &{dataScheduleTimeModal.doctorData.lastName}`
+                `${dataScheduleTimeModal.doctorData.firstName} ${dataScheduleTimeModal.doctorData.lastName}`
             return name
         }
         return ''
@@ -122,7 +122,7 @@ class BookingModal extends Component {
     handleConfirmBooking = async () => {
         let date = new Date(this.state.birthday).getTime();
         let timeString = this.buildTimeBooking(this.props.dataScheduleTimeModal);
-        let doctorName = this.buildTimeBooking(this.props.dataScheduleTimeModal);
+        let doctorName = this.buildDoctorName(this.props.dataScheduleTimeModal);
         let res = await postPatientBookAppointmentService({
             fullName: this.state.fullName,
             phonenumber: this.state.phonenumber,

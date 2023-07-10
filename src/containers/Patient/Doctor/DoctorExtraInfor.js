@@ -18,6 +18,14 @@ class DoctorExtraInfor extends Component {
     }
 
     async componentDidMount() {
+        if (this.props.doctorIdFromParent) {
+            let res = await getExtraInforDoctorByIdService(this.props.doctorIdFromParent);
+            if (res && res.errCode === 0) {
+                this.setState({
+                    extraInfor: res.data
+                })
+            }
+        }
 
     }
 
@@ -94,18 +102,19 @@ class DoctorExtraInfor extends Component {
                                         <FormattedMessage id='patient.extra-infor-doctor.price' />
                                     </span>
                                     <span className='right'>
-                                        {extraInfor && extraInfor.priceData && language === LANGUAGES.VI ?
+                                        {extraInfor && extraInfor.priceData && language === LANGUAGES.VI &&
                                             <NumericFormat
                                                 value={extraInfor.priceData.valueVi}
                                                 displayType={'text'}
                                                 thousandSeparator={true}
                                                 suffix={'VND'} />
-                                            :
+                                        }
+                                        {extraInfor && extraInfor.priceData && language === LANGUAGES.EN &&
                                             <NumericFormat
                                                 value={extraInfor.priceData.valueEn}
                                                 displayType={'text'}
                                                 thousandSeparator={true}
-                                                suffix={'$'} />
+                                                suffix={'USD'} />
                                         }
                                     </span>
                                 </div>
@@ -116,8 +125,10 @@ class DoctorExtraInfor extends Component {
 
                             <div className='payment'>
                                 <FormattedMessage id='patient.extra-infor-doctor.payment' />
-                                {extraInfor && extraInfor.paymentData && language === LANGUAGES.VI ?
-                                    extraInfor.paymentData.valueVi : extraInfor.paymentData.valueEn}
+                                {extraInfor && extraInfor.paymentData && language === LANGUAGES.VI &&
+                                    extraInfor.paymentData.valueVi}
+                                {extraInfor && extraInfor.paymentData && language === LANGUAGES.EN &&
+                                    extraInfor.paymentData.valueEn}
                             </div>
                             <div className='hide-price'>
                                 <span onClick={() => this.showHideDetailInfor()}>
