@@ -9,6 +9,7 @@ import { getExtraProfileDoctorByIdService } from '../../../services/userService'
 import { NumericFormat } from 'react-number-format';
 import _ from 'lodash';
 import moment from 'moment/moment';
+import { Link } from 'react-router-dom';
 
 class ProfileDoctor extends Component {
 
@@ -66,7 +67,7 @@ class ProfileDoctor extends Component {
     }
 
     render() {
-        let { language, isShowDescription, dataScheduleTimeModal } = this.props;
+        let { language, isShowDesctiptionDoctor, dataScheduleTimeModal, isShowLinkDetail, isShowPrice, doctorId } = this.props;
         let { detailDoctor } = this.state;
         let nameVi = '', nameEn = '';
         if (detailDoctor && detailDoctor.positionData) {
@@ -84,7 +85,7 @@ class ProfileDoctor extends Component {
                             {language === LANGUAGES.VI ? nameVi : nameEn}
                         </div>
                         <div className='down'>
-                            {isShowDescription === true ?
+                            {isShowDesctiptionDoctor === true ?
                                 <>
                                     {detailDoctor.Markdown && detailDoctor.Markdown.description &&
                                         <span>
@@ -103,26 +104,34 @@ class ProfileDoctor extends Component {
                         </div>
                     </div>
                 </div>
-                <div className='price'>
-                    <FormattedMessage id='patient.booking-modal.price' />
-                    {detailDoctor && detailDoctor.Doctor_Infor && detailDoctor.Doctor_Infor.priceData && language === LANGUAGES.VI ?
-                        <NumericFormat
-                            value={detailDoctor.Doctor_Infor.priceData.valueVi}
-                            displayType={'text'}
-                            thousandSeparator={true}
-                            suffix={'VND'} />
-                        : ''
-                    }
-                    {detailDoctor && detailDoctor.Doctor_Infor && detailDoctor.Doctor_Infor.priceData && language === LANGUAGES.EN ?
-                        <NumericFormat
-                            value={detailDoctor.Doctor_Infor.priceData.valueEn}
-                            displayType={'text'}
-                            thousandSeparator={true}
-                            suffix={'$'} />
-                        : ''
-                    }
-                </div>
-            </div>
+                {isShowLinkDetail === true &&
+                    <div className='view-detail-doctor'>
+                        <Link to={`/detail-doctor/${doctorId}`}>Xem thêm</Link>
+                    </div>
+                }
+                {
+                    isShowPrice === true &&
+                    <div className='price'>
+                        <FormattedMessage id='patient.booking-modal.price' />
+                        {detailDoctor && detailDoctor.Doctor_Infor && detailDoctor.Doctor_Infor.priceData && language === LANGUAGES.VI ?
+                            <NumericFormat
+                                value={detailDoctor.Doctor_Infor.priceData.valueVi}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={'VND'} />
+                            : ''
+                        }
+                        {detailDoctor && detailDoctor.Doctor_Infor && detailDoctor.Doctor_Infor.priceData && language === LANGUAGES.EN ?
+                            <NumericFormat
+                                value={detailDoctor.Doctor_Infor.priceData.valueEn}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={'$'} />
+                            : ''
+                        }
+                    </div>
+                }
+            </div >
 
         );
     }
